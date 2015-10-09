@@ -3,7 +3,6 @@
 #include <string.h>
 #include <time.h>
 #include <assert.h>
-#include "phonebook_opt.h"
 #include IMPL
 
 #define DICT_FILE "./dictionary/words.txt"
@@ -23,8 +22,6 @@ static double diff_in_second(struct timespec t1, struct timespec t2)
 
 int main(int argc, char *argv[])
 {
-    init();
-
     FILE *fp;
     int i = 0;
     char line[MAX_LAST_NAME_SIZE];
@@ -38,10 +35,12 @@ int main(int argc, char *argv[])
         return -1;
     }
 
+    init();
+
     /* build the entry */
     entry *pHead, *e;
     pHead = (entry *) malloc(sizeof(entry));
-    printf("size of entry : %lu bytes\n", sizeof(entry));
+    printf("size of entry : %lu bytes\n", sizeof(HashList));
     e = pHead;
     e->pNext = NULL;
 
@@ -51,11 +50,10 @@ int main(int argc, char *argv[])
     clock_gettime(CLOCK_REALTIME, &start);
     while (fgets(line, sizeof(line), fp)) {
         while (line[i] != '\0')
-            i++;////////////////////////////////////////////////
+            i++;
         line[i - 1] = '\0';
         i = 0;
-        //e = append(line, e);
-	pushHashTable(line,HashFunc(line,1));
+        pushHashTable(line,HashFunc(line));
     }
     clock_gettime(CLOCK_REALTIME, &end);
     cpu_time1 = diff_in_second(start, end);
@@ -69,24 +67,14 @@ int main(int argc, char *argv[])
     char input[MAX_LAST_NAME_SIZE] = "zzzzzzzz";
     e = pHead;
 
-/*   assert(findName(input, e) &&
-           "Did you implement findName() in " IMPL "?");
-    assert(0 == strcmp(findName(input, e)->lastName,input));
-*/
-
-//assert(1==IsFound(input));
-//if(IsFound(input) == 1) printf("%s\n","yesyesyesyesyes");
-//else printf("%s\n","OOOOOOOOOOOOOOOOOOOOO");
-
-
 #if defined(__GNUC__)
     __builtin___clear_cache((char *) pHead, (char *) pHead + sizeof(entry));
 #endif
     /* compute the execution time */
     clock_gettime(CLOCK_REALTIME, &start);
     //findName(input, e);
-	int found=IsFound(input);
-	assert(found==1);
+    int found=IsFound(input);
+    assert(found==1);
     clock_gettime(CLOCK_REALTIME, &end);
     cpu_time2 = diff_in_second(start, end);
 
@@ -95,6 +83,6 @@ int main(int argc, char *argv[])
 
     /* FIXME: release all allocated entries */
     free(pHead);
-	FREE();
+    FREE_HashTable();
     return 0;
 }
