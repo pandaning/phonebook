@@ -21,4 +21,21 @@ typedef struct __PHONE_BOOK_ENTRY {
 entry *findName(char lastname[], entry *pHead);
 entry *append(char lastName[], entry *e);
 
+
+typedef struct  HashList
+{
+	char name[20];
+	struct HashList *next;
+	
+
+}HL;
+
+HL *head[20000];
+HL *ptr[20000];
+
+void init();
+int HashFunc(char *str,int method);//return pos;
+int IsFound(char *str);
+void pushHashTable(char *str,int id);
+void FREE();
 #endif
