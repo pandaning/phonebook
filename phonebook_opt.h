@@ -3,6 +3,9 @@
 
 #define MAX_LAST_NAME_SIZE 16
 
+#define method  2      //Choose which hash function to use.
+#define HashTableSize 69997 //a prime number
+
 /* original version */
 typedef struct __PHONE_BOOK_ENTRY {
     char lastName[MAX_LAST_NAME_SIZE];
@@ -21,21 +24,18 @@ typedef struct __PHONE_BOOK_ENTRY {
 entry *findName(char lastname[], entry *pHead);
 entry *append(char lastName[], entry *e);
 
+/* Revised version */
+typedef struct  HashList {
+    char name[20];
+    struct HashList *next;
+} HashList;
 
-typedef struct  HashList
-{
-	char name[20];
-	struct HashList *next;
-	
-
-}HL;
-
-HL *head[20000];
-HL *ptr[20000];
+HashList *head[HashTableSize];
+HashList *ptr[HashTableSize];
 
 void init();
-int HashFunc(char *str,int method);//return pos;
+int HashFunc(char *str);//return pos;
 int IsFound(char *str);
 void pushHashTable(char *str,int id);
-void FREE();
+void FREE_HashTable();
 #endif
