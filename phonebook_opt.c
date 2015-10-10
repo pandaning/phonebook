@@ -3,19 +3,7 @@
 #include <assert.h>
 #include "phonebook_opt.h"
 
-/* FILL YOUR OWN IMPLEMENTATION HERE! */
-entry *findName(char lastname[], entry *pHead)
-{
-    /* TODO: implement */
-    return NULL;
-}
-
-entry *append(char lastName[], entry *e)
-{
-    return NULL;
-}
-
-void init()
+void init_Hash_Table()
 {
     for(int i=0; i<HashTableSize; i++) {
         head[i]=malloc(sizeof(HashList));
@@ -27,8 +15,7 @@ int HashFunc(char *str)//return pos
 {
     unsigned long long int pos=0;
     int strLength =  strlen(str);
-    int chooseMethod = method;
-    switch(chooseMethod) {
+    switch(method) {
     case 1:
         for(int i=0; i<strLength; i++) {
             pos+=str[i];
@@ -67,15 +54,15 @@ int IsFound(char str[])
     }
     return no;
 }
-void pushHashTable(char *str,int id)
+void push_Hash_Table(char *str,int id)
 {
     ptr[id]->next=malloc(sizeof(HashList));
     ptr[id]=ptr[id]->next;
     strcpy(ptr[id]->name,str);     //ptr[id]->name=str;
     ptr[id]->next=NULL;
 }
-
-void FREE_HashTable()
+/*To release each node in the Linked-List malloced*/
+void Release_Hash_Table()
 {
     for(int i=0; i<HashTableSize; i++) {
         HashList *tmp=head[i];
