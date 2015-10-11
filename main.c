@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
             i++;
         line[i - 1] = '\0';
         i = 0;
-        push_Hash_Table(line,HashFunc(line));
+        push_Hash_Table(line);
     }
     clock_gettime(CLOCK_REALTIME, &end);
     cpu_time1 = diff_in_second(start, end);
@@ -55,15 +55,13 @@ int main(int argc, char *argv[])
     fclose(fp);
 
     /* the given last name to find */
-    char input[MAX_LAST_NAME_SIZE] = "zzzzzzzz";
-
+    char input[MAX_LAST_NAME_SIZE] = "zyxel";
     /* compute the execution time */
     clock_gettime(CLOCK_REALTIME, &start);
     int found=IsFound(input);
     assert(found==1);
     clock_gettime(CLOCK_REALTIME, &end);
     cpu_time2 = diff_in_second(start, end);
-
     printf("execution time of append() : %lf sec\n", cpu_time1);
     printf("execution time of findName() : %lf sec\n", cpu_time2);
 
