@@ -11,48 +11,45 @@ void init_Hash_Table()
         ptr[i]=head[i];
     }
 }
-int HashFunc(char *str)//return pos
+int HashFunc(char *str)//return id
 {
-    unsigned long long int pos=0;
-    int strLength =  strlen(str);
+    unsigned int id=0;
     switch(method) {
     case 1:
-        for(int i=0; i<strLength; i++) {
-            pos+=str[i];
+        for(int i=0; str[i]; i++) {
+            id+=str[i];
         }
         break;
     case 2:
-        for(int i=0; i<strLength; i++) {
-            pos+=str[i]<<i;
+        for(int i=0; str[i]; i++) {
+            id+=str[i]<<i;
         }
         break;
     case 3:
-        pos=5381;
+        id=5381;
         for(int i=0; str[i]; i++) {
-            pos=((pos<<5)+pos)+str[i];
+            id=((id<<5)+id)+str[i];
         }
         break;
     case 4:
         for(int i=0; str[i]; i++) {
-            pos=((pos<<6)+(pos<<16)) - pos + str[i];
+            id=((id<<6)+(id<<16)) - id + str[i];
         }
         break;
     default:
         break;
     }
-    return pos%HashTableSize;
+    return id%HashTableSize;
 }
 int IsFound(char str[])
 {
-    int yes=1;
-    int no=0;
-    int id=HashFunc(str);
+    int id=HashFunc(str);//check which table the string is in
     for(HashList* tmp=head[id] ; tmp!=NULL ; tmp=tmp->next) {
         if(strcmp(tmp->name , str)==0) { //if(tmp->name==str)
-            return yes;
+            return 1;
         }
     }
-    return no;
+    return 0;
 }
 void push_Hash_Table(char *str,int id)
 {
