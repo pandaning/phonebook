@@ -11,33 +11,35 @@ void init_Hash_Table()
         ptr[i]=head[i];
     }
 }
-int HashFunc(char *str)//return id
+static inline int LoseLose(char *str)
 {
     unsigned int id=0;
-    switch(method) {
-    case 1:
-        for(int i=0; str[i]; i++) {
-            id+=str[i];
-        }
-        break;
-    case 2:
-        for(int i=0; str[i]; i++) {
-            id+=str[i]<<i;
-        }
-        break;
-    case 3:
-        id=5381;
-        for(int i=0; str[i]; i++) {
-            id=((id<<5)+id)+str[i];
-        }
-        break;
-    case 4:
-        for(int i=0; str[i]; i++) {
-            id=((id<<6)+(id<<16)) - id + str[i];
-        }
-        break;
-    default:
-        break;
+    for(int i=0; str[i]; i++) {
+        id+=str[i];
+    }
+    return id%HashTableSize;
+}
+static inline int ShiftMethod(char *str)
+{
+    unsigned int id=0;
+    for(int i=0; str[i]; i++) {
+        id+=str[i]<<i;
+    }
+    return id%HashTableSize;
+}
+static inline int djb2(char*str)
+{
+    unsigned id=5381;
+    for(int i=0; str[i]; i++) {
+        id=((id<<5)+id)+str[i];
+    }
+    return id%HashTableSize;
+}
+static inline int sdbm(char *str)
+{
+    unsigned int id=0;
+    for(int i=0; str[i]; i++) {
+        id=((id<<6)+(id<<16)) - id + str[i];
     }
     return id%HashTableSize;
 }
@@ -51,8 +53,9 @@ int IsFound(char str[])
     }
     return 0;
 }
-void push_Hash_Table(char *str,int id)
+void push_Hash_Table(char *str)
 {
+    int id=HashFunc(str);
     ptr[id]->next=malloc(sizeof(HashList));
     ptr[id]=ptr[id]->next;
     strcpy(ptr[id]->name,str);     //ptr[id]->name=str;
