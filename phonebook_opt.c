@@ -74,3 +74,10 @@ void Release_Hash_Table()
         }
     }
 }
+/*Implementing abstraction with C*/
+struct phonebook phonebook = {
+    .init_Hash_Table = init_Hash_Table,
+    .IsFound = IsFound,
+    .push_Hash_Table = push_Hash_Table,
+    .Release_Hash_Table = Release_Hash_Table
+};
