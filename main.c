@@ -23,7 +23,7 @@ static double diff_in_second(struct timespec t1, struct timespec t2)
 #ifdef HASHFUNCTION
 int main(int argc, char *argv[])
 {
-    FILE *fp;
+    FILE *fp, *outfile;
     int i = 0;
     char line[MAX_LAST_NAME_SIZE];
     struct timespec start, end;
@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
         return -1;
     }
     /*Build head for Hash Table*/
-    init_Hash_Table();
+    phonebook.init_Hash_Table();
 
     printf("size of entry : %lu bytes\n", sizeof(HashList));
 
@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
             i++;
         line[i - 1] = '\0';
         i = 0;
-        push_Hash_Table(line);
+        phonebook.push_Hash_Table(line);
     }
     clock_gettime(CLOCK_REALTIME, &end);
     cpu_time1 = diff_in_second(start, end);
@@ -58,15 +58,17 @@ int main(int argc, char *argv[])
     char input[MAX_LAST_NAME_SIZE] = "zyxel";
     /* compute the execution time */
     clock_gettime(CLOCK_REALTIME, &start);
-    int found=IsFound(input);
+    int found=phonebook.IsFound(input);
     assert(found==1);
     clock_gettime(CLOCK_REALTIME, &end);
     cpu_time2 = diff_in_second(start, end);
     printf("execution time of append() : %lf sec\n", cpu_time1);
     printf("execution time of findName() : %lf sec\n", cpu_time2);
+    outfile = fopen("ShiftMethod.txt","a");
+    fprintf(outfile, "%f\t%f\n", cpu_time1, cpu_time2);
 
     /* FIXME: release all allocated entries */
-    Release_Hash_Table();
+    phonebook.Release_Hash_Table();
 
     return 0;
 }
@@ -75,7 +77,7 @@ int main(int argc, char *argv[])
 #ifdef ORIGINAL
 int main(int argc, char *argv[])
 {
-    FILE *fp;
+    FILE *fp, *outfile;
     int i = 0;
     char line[MAX_LAST_NAME_SIZE];
     struct timespec start, end;
@@ -133,6 +135,8 @@ int main(int argc, char *argv[])
 
     printf("execution time of append() : %lf sec\n", cpu_time1);
     printf("execution time of findName() : %lf sec\n", cpu_time2);
+    outfile = fopen("Ori1.txt","a");
+    fprintf(outfile, "%f\t%f\n", cpu_time1, cpu_time2);
 
     /* FIXME: release all allocated entries */
     free(pHead);
