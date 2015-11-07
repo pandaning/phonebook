@@ -2,7 +2,7 @@
 #define _PHONEBOOK_H
 
 #define MAX_LAST_NAME_SIZE 15
-#define HashFunc djb2 //Choose which hash function to use.
+#define HashFunc fuzzySearch //Choose which hash function to use.
 #define HashTableSize 6997 //a prime number
 
 /* Revised version */
@@ -16,8 +16,8 @@ struct phonebook {
     int (*IsFound)(char *str);
     void (*push_Hash_Table)(char *str);
     void (*Release_Hash_Table)(void);
+    void (*DoFuzzySearch)(char *str);
 };
-
 HashList *head[HashTableSize];
 HashList *ptr[HashTableSize];
 struct phonebook phonebook;
